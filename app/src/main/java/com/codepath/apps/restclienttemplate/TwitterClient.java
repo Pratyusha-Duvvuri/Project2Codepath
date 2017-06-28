@@ -23,8 +23,8 @@ import com.loopj.android.http.RequestParams;
 public class TwitterClient extends OAuthBaseClient {
 	public static final BaseApi REST_API_INSTANCE = TwitterApi.instance(); // Change this
 	public static final String REST_URL = "https://api.twitter.com/1.1"; // Change this, base API URL
-	public static final String REST_CONSUMER_KEY = "cZ3la8MbNnCBKEz9W718XhvP8";       // Change this
-	public static final String REST_CONSUMER_SECRET = "MaIu9IuKtBwLpg1v8qKi38AzGUYdvmHG9epaGJnpJi6u0Nz0ku"; // Change this
+	public static final String REST_CONSUMER_KEY = "m4BwWvVJCX6LA3RkmNBROYkjh";       // Change this
+	public static final String REST_CONSUMER_SECRET = "EGmNf4LmLCl71Z7kiRP1qU4IT4AQw8P9E3Tucs8KUtHWwAVOa6"; // Change this
 
 	// Landing page to indicate the OAuth flow worked in case Chrome for Android 25+ blocks navigation back to the app.
 	public static final String FALLBACK_URL = "https://codepath.github.io/android-rest-client-template/success.html";
@@ -50,6 +50,16 @@ public class TwitterClient extends OAuthBaseClient {
 		params.put("since_id",1);
 		client.get(apiUrl, params, handler);
 	}
+
+
+	public void sendTweet(String message, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("statuses/update.json");
+		// Can specify query string params directly or through RequestParams.
+		RequestParams params = new RequestParams();
+		params.put("status", message);
+		client.post(apiUrl, params, handler);
+	}
+
 
 	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
 	 * 	  i.e getApiUrl("statuses/home_timeline.json");

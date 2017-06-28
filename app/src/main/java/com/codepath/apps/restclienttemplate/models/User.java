@@ -1,5 +1,8 @@
 package com.codepath.apps.restclienttemplate.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -7,7 +10,7 @@ import org.json.JSONObject;
  * Created by pratyusha98 on 6/26/17.
  */
 
-public class User {
+public class User implements Parcelable{
 
     // list the attributes
 
@@ -29,5 +32,43 @@ public class User {
 
         return user;
     }
+    public User(){}
 
+    public static final Parcelable.Creator<User> CREATOR
+            = new Parcelable.Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel source) {
+            return new User(source);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
+    private User(Parcel in) {
+        uid = in.readLong();
+
+        name = in.readString();
+        screenName = in.readString();
+
+        profileImageUrl = in.readString();
+
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel out, int flags) {
+
+        out.writeLong(uid);
+        out.writeString(name);
+        out.writeString(screenName);
+        out.writeString(profileImageUrl);
+
+
+    }
 }
