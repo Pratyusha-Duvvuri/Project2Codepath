@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -22,11 +23,12 @@ public class ComposeActivity extends AppCompatActivity {
     //adding stuff for step 6
 
     TwitterClient client;
-    EditText  Message;
+    EditText Message;
     Tweet tweet;
     private final int RESULT_OK = 10;
     private EditText mEditText;
     private TextView characterCount ;
+    public int state;
 
     private final TextWatcher mTextEditorWatcher = new TextWatcher() {
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -50,7 +52,14 @@ public class ComposeActivity extends AppCompatActivity {
         mEditText = (EditText) findViewById(R.id.tweetHere);
         mEditText.addTextChangedListener(mTextEditorWatcher);
         characterCount = (TextView)findViewById(R.id.characterCount);
+        Tweet tweet = getIntent().getParcelableExtra("tweet");
+        state = getIntent().getIntExtra("iamhere",10);
+        Log.d("kayfam", "ayy");
 
+       // if(!(tweet.user==null)){
+        if(state ==10){
+        EditText editText = (EditText) findViewById(R.id.tweetHere);
+        editText.setText("@"+tweet.user.screenName, TextView.BufferType.EDITABLE);}
     }
 
 
@@ -76,6 +85,7 @@ public class ComposeActivity extends AppCompatActivity {
                     finish(); // closes the activity, pass data to parent
 
                 } catch (JSONException e) {
+
                     e.printStackTrace();
                 }
 

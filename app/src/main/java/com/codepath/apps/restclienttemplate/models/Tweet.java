@@ -31,6 +31,7 @@ public class Tweet implements Parcelable {
 
         // extract the values from JSON
 
+
         tweet.body = jsonObject.getString("text");
         tweet.uid = jsonObject.getLong("id");
         tweet.createdAt = jsonObject.getString("created_at");

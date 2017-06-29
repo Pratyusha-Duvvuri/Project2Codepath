@@ -133,7 +133,6 @@ public class TimelineActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-                // Log.d("TwitterClient", response.toString() )    ;        }
                 //iterate through the JSON array
                 // for each entry, deserialize the JSON onject
 
@@ -190,7 +189,15 @@ public class TimelineActivity extends AppCompatActivity {
     // FirstActivity, launching an activity for a result
     public void onComposeAction(MenuItem mi) {
         Intent i = new Intent(TimelineActivity.this, ComposeActivity.class);
-        i.putExtra("mode", 2); // pass arbitrary data to launched activity
+        //i.putExtra("mode", 2); // pass arbitrary data to launched activity
+        Tweet tweet = new Tweet();
+        tweet.user= null;
+        ;
+       // Log.d("Please", ""+tweet.user.uid);
+        i.putExtra("iamhere",0);//Parcels.wrap(t)
+
+        i.putExtra("tweet",tweet);//Parcels.wrap(t)
+
         startActivityForResult(i, REQUEST_CODE);
     }
 
