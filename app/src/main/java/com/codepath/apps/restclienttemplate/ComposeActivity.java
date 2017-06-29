@@ -54,17 +54,10 @@ public class ComposeActivity extends AppCompatActivity {
     }
 
 
-    //TEXT Watcher class
-
-
     public void returnTweet(View view) {
 
         // resolve the text field from the layout
         Message = (EditText) findViewById(R.id.tweetHere);
-//        // set the text field's content from the intent
-//        etItemText.setText(getIntent().getStringExtra(ITEM_TEXT));
-        // track the position of the item in the list
-
 
         client.sendTweet(Message.getText().toString(),new JsonHttpResponseHandler() {
             @Override
@@ -86,13 +79,6 @@ public class ComposeActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-
-                //send back the new tweet ---- call function below onSubmit???
-
-                //        EditText etName = (EditText) findViewById(R.id.tweetHere);
-                // Prepare data intent
-
-
             }
 
             @Override
@@ -102,20 +88,5 @@ public class ComposeActivity extends AppCompatActivity {
         });
     }
 
-
-
-
-    // ActivityNamePrompt.java -- launched for a result
-//    public void onSubmit(View v) {
-////        EditText etName = (EditText) findViewById(R.id.tweetHere);
-//        // Prepare data intent
-//        Intent data = new Intent();
-//        // Pass relevant data back as a result
-//        data.putExtra("name", etName.getText().toString());
-//        data.putExtra("code", 200); // ints work too
-//        // Activity finished ok, return the data
-//        setResult(RESULT_OK, data); // set result code and bundle data for response
-//        finish(); // closes the activity, pass data to parent
-//    }
 
 }

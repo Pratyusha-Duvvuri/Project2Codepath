@@ -25,28 +25,28 @@ import cz.msebera.android.httpclient.Header;
 public class TimelineActivity extends AppCompatActivity {
 
 //    //this is for the intermediate progress bar
-//    MenuItem miActionProgressItem;
-//    @Override
-//    public boolean onPrepareOptionsMenu(Menu menu) {
-//        // Store instance of the menu item containing progress
-//        miActionProgressItem = menu.findItem(R.id.miActionProgress);
-//        // Extract the action-view from the menu item
-//        ProgressBar v =  (ProgressBar) MenuItemCompat.getActionView(miActionProgressItem);
-//        // Return to finish
-//        return super.onPrepareOptionsMenu(menu);
-//    }
-//    public void showProgressBar() {
-//        // Show progress item
-//        miActionProgressItem.setVisible(true);
-//    }
-//
-//    public void hideProgressBar() {
-//        // Hide progress item
-//        miActionProgressItem.setVisible(false);
-//    }
+    MenuItem miActionProgressItem;
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // Store instance of the menu item containing progress
+        miActionProgressItem = menu.findItem(R.id.miActionProgress);
+        // Extract the action-view from the menu item
+        //ProgressBar v =  (ProgressBar) MenuItemCompat.getActionView(miActionProgressItem);
+        // Return to finish
+        return super.onPrepareOptionsMenu(menu);
+    }
+    public void showProgressBar() {
+        // Show progress item
+        miActionProgressItem.setVisible(true);
+    }
+
+    public void hideProgressBar() {
+        // Hide progress item
+        miActionProgressItem.setVisible(false);
+    }
 
     //first we put stuff in twitter client
-    //now we are goint to populate our timeline here
+    //now we are going to populate our timeline here
 
     //create references....
     TwitterClient client;
@@ -54,7 +54,6 @@ public class TimelineActivity extends AppCompatActivity {
     ArrayList<Tweet> tweets;
     RecyclerView rvTweets;
     SwipeRefreshLayout swipeContainer;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

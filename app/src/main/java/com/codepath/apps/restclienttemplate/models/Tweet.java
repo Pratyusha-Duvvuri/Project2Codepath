@@ -19,6 +19,7 @@ public class Tweet implements Parcelable {
     public long uid; // database ID for the tweet
     public User user;
     public String createdAt;
+    public String reply;
 
 
 
@@ -34,6 +35,7 @@ public class Tweet implements Parcelable {
         tweet.uid = jsonObject.getLong("id");
         tweet.createdAt = jsonObject.getString("created_at");
         tweet.user = User.fromJSON( jsonObject.getJSONObject("user"));
+        tweet.reply = jsonObject.getString("in_reply_to_status_id");
         return tweet;
     }
 
@@ -63,6 +65,7 @@ public class Tweet implements Parcelable {
         createdAt = in.readString();
 
         body = in.readString();
+        reply = in.readString();
 
     }
 
@@ -77,6 +80,7 @@ public class Tweet implements Parcelable {
         out.writeParcelable(user,flags);
         out.writeString(createdAt);
         out.writeString(body);
+        out.writeString(reply);
 
     }
 }

@@ -18,6 +18,7 @@
         android:orderInCategory="100"
         app:showAsAction="always"
         app:actionLayout="@layout/action_view_progress" />
+
 </menu>
 
 

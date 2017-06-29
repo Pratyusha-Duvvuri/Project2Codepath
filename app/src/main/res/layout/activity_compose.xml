@@ -17,12 +17,18 @@
 
     <EditText
         android:id="@+id/tweetHere"
-        android:layout_width="384dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:inputType="text"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp"
-        tools:ignore="MissingConstraints" />
+
+        tools:ignore="MissingConstraints"
+        tools:layout_constraintTop_creator="1"
+        tools:layout_constraintRight_creator="1"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="36dp"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
     <!--change this line as well-->
 
     <!--</android.support.design.widget.TextInputLayout>-->
@@ -32,18 +38,26 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Button"
-        tools:layout_editor_absoluteX="35dp"
-        tools:layout_editor_absoluteY="295dp"
         android:onClick="returnTweet"
-        tools:ignore="MissingConstraints" />
+        android:layout_alignParentBottom="true"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintBottom_creator="1"
+        tools:layout_editor_absoluteX="288dp"
+        tools:layout_editor_absoluteY="455dp" />
 
     <TextView
         android:id="@+id/characterCount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        tools:layout_editor_absoluteX="325dp"
-        tools:layout_editor_absoluteY="489dp" />
+        android:layout_width="88dp"
+        android:layout_height="0dp"
+        android:text="Character Count"
+        android:layout_alignParentBottom="true"
+
+        tools:layout_constraintTop_creator="1"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintBottom_creator="1"
+        android:layout_marginEnd="12dp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="462dp" />
     <!--# you wanna change this above line miss-->
 
 </android.support.constraint.ConstraintLayout>
