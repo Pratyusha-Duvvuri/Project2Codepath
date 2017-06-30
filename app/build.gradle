@@ -50,5 +50,7 @@ dependencies {
     compile 'com.android.support:support-vector-drawable:25.3.1' // VectorDrawableCompat
     compile 'com.android.support:animated-vector-drawable:25.3.1' // AnimatedVectorDrawableCompat
     compile 'com.android.support:transition:25.3.1'
+    compile 'com.jakewharton:butterknife:8.4.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
 
 }

@@ -7,9 +7,9 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:id="@+id/ivDetailsProfile"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         app:srcCompat="@android:color/background_dark"
@@ -17,14 +17,77 @@
         tools:layout_width="100dp" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/tvDetailsTimeStamp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
         android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:id="@+id/tvDetailsUser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/ivDetailReply" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:id="@+id/tvDetailsLike"
+        android:layout_marginTop="102dp"
+        android:layout_below="@+id/tvDetailsBody"
+        android:layout_toEndOf="@+id/ivDetailsProfile" />
+
+    <TextView
+        android:id="@+id/tvDetailsBody"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="19dp"
-        android:layout_toEndOf="@+id/imageView"
-        android:layout_alignBottom="@+id/imageView" />
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/ivDetailsProfile"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/tvDetailsRetweets"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/tvDetailsLike"
+        android:layout_centerHorizontal="true"
+        android:text="TextView" />
+
+    <ImageButton
+        android:id="@+id/ivDetailLike"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_vector_heart_stroke"
+        android:layout_alignTop="@+id/ivDetailReply"
+        android:layout_toStartOf="@+id/tvDetailsRetweets" />
+
+    <ImageButton
+        android:id="@+id/ivDetailReply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tvDetailsRetweets"
+        android:layout_alignStart="@+id/tvDetailsRetweets"
+        app:srcCompat="@drawable/ic_vector_retweet_stroke" />
+
+    <TextView
+        android:id="@+id/tvDetailScreenName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/ivDetailReply"
+        android:text="TextView" />
+
+    <ImageView
+        android:id="@+id/ivLoadedImage"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="14dp"
+        app:srcCompat="@drawable/ic_vector_close" />
 
 </RelativeLayout>

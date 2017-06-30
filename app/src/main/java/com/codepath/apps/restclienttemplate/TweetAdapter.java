@@ -42,6 +42,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
     public static List<Tweet> mTweets;
     Context context;
     TwitterClient client;
+    public String relTime;
     //public RecyclerView rvTweets;
 
     public TweetAdapter(List<Tweet> tweets){
@@ -96,8 +97,8 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         holder.tvUsername.setText(tweet.user.name);
         holder.tvBody.setText(tweet.body);
         holder.tvScreenName.setText("       @"+tweet.user.screenName);
-
-        holder.tvTimeStamp.setText(getRelativeTimeAgo(tweet.createdAt));
+        relTime= getRelativeTimeAgo(tweet.createdAt);
+        holder.tvTimeStamp.setText(relTime);
 
         Glide.with(context).load(tweet.user.profileImageUrl).into(holder.ivProfileImage);
         if(tweet.favorite_status)
@@ -179,13 +180,22 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                     intent.putExtra("tweet", tweet);//Parcels.wrap(t)
                     // show the activity
                     //context.startActivityforResult(intent, REQUEST_CODE);
-                    context.startActivity(intent);
+                    ((TimelineActivity)context).startActivityForResult(intent,20);
+                    // REQUEST_CODE is defined above
+//                    if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+//                        // Extract name value from result extras
+//                        Tweet tweet = (Tweet) data.getParcelableExtra("tweet");
                     //Todo ask about the thing abopve like what is going on with startActivity
-                } else if (v.getId() == R.id.ivRetweet) {
+                }
+                else if (v.getId() == R.id.ivRetweet) {
                     Log.d("Cont", "retweet");
 
 
                     if(tweet.retweet_status){
+                        tweet.retweet_count-=1;
+                        TweetAdapter.this.notify();
+
+
 
                         client.unretweet(Long.toString(tweet.uid), new AsyncHttpResponseHandler() {
 
@@ -205,7 +215,10 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                     }
 
                     else{
-                    client.retweet(Long.toString(tweet.uid), new AsyncHttpResponseHandler() {
+                        tweet.retweet_count+=1;
+                        TweetAdapter.this.notify();
+
+                        client.retweet(Long.toString(tweet.uid), new AsyncHttpResponseHandler() {
 
                         @Override
                         public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -261,19 +274,23 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                     });}
                 }
              else {
-//                        Intent intent = new Intent(context, DetailActivity.class);
-//                        // seria\lize the movie using parceler, use its short name as a key
-//                        //intent.putExtra("tweet", tweet);
-//                        // show the activity
-//                        //context.startActivityforResult(intent, REQUEST_CODE);
-//                       // ((ComposeActivity) context).startActivityForResult(intent, REQUEST_CODE);
-//
-//                        context.startActivity(intent);
-            }
-                mTweets.add(0, tweet);
+                    //Toast.makeText(context, "Going to Details", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(context, DetailActivity.class);
+                    // serialize the movie using parceler, use its short name as a key
+                    intent.putExtra("tweet", tweet);//Parcels.wrap(t)
+                    intent.putExtra("timeStamp", relTime);
+                    // show the activity
+                    //context.startActivityforResult(intent, REQUEST_CODE);
+                    context.startActivity(intent);
+
+             }
+                Toast.makeText(context, "Going to Details", Toast.LENGTH_SHORT).show();
+
+
+                //mTweets.add(0, tweet);
                 //tweetAdapter.notifyItemInserted(0);
-                TweetAdapter.this.notifyItemInserted(0);
-         //       rvTweets.scrollToPosition(0);
+                //TweetAdapter.this.notifyItemInserted(0);
+                //rvTweets.scrollToPosition(0);
 
             }
 

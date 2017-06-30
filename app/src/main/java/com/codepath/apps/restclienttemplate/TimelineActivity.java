@@ -2,6 +2,7 @@ package com.codepath.apps.restclienttemplate;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.codepath.apps.restclienttemplate.models.Tweet;
@@ -27,13 +29,16 @@ public class TimelineActivity extends AppCompatActivity {
 
 //    //this is for the intermediate progress bar
     MenuItem miActionProgressItem;
+    ProgressBar v;
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // Store instance of the menu item containing progress
         miActionProgressItem = menu.findItem(R.id.miActionProgress);
         // Extract the action-view from the menu item
-        //ProgressBar v =  (ProgressBar) MenuItemCompat.getActionView(miActionProgressItem);
+         v = (ProgressBar) MenuItemCompat.getActionView(miActionProgressItem);
         // Return to finish
+        populateTimeline();
+
         return super.onPrepareOptionsMenu(menu);
     }
     public void showProgressBar() {
@@ -78,7 +83,6 @@ public class TimelineActivity extends AppCompatActivity {
         //set the adapter
 
         rvTweets.setAdapter(tweetAdapter);
-        populateTimeline();
 
 //        //Stuff that i copied for the refresh action
 //        //###############################
@@ -137,6 +141,23 @@ public class TimelineActivity extends AppCompatActivity {
                 // Remember to CLEAR OUT old items before appending in the new ones
                 tweetAdapter.clear();
                 // ...the data has come back, add new items to your adapter...
+
+
+                for(int i =0;i< response.length();i++) {
+
+                    //convert eachobject to a Tweet model
+                    //add that Tweet model to our data source
+                    //notify the adapter that we've added an item
+                    Tweet tweet = null;
+
+                    try {
+                        tweet = Tweet.fromJSON(response.getJSONObject(i));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    tweets.add(tweet);
+                    tweetAdapter.notifyItemInserted(tweets.size() - 1);
+                }
                 tweetAdapter.addAll(tweets);
                 tweetAdapter.notifyDataSetChanged();
 
@@ -146,6 +167,7 @@ public class TimelineActivity extends AppCompatActivity {
 
             public void onFailure(Throwable e) {
                 Log.d("DEBUG", "Fetch timeline error: " + e.toString());
+                Log.d("DEBUG", "Fetch timeline error: " + e.toString());
             }
         });
 
@@ -154,6 +176,7 @@ public class TimelineActivity extends AppCompatActivity {
 
 
     private void populateTimeline(){
+        showProgressBar();
 
         client.getHomeTimeline( new JsonHttpResponseHandler(){
             @Override
@@ -200,6 +223,7 @@ public class TimelineActivity extends AppCompatActivity {
                 Log.d("TwitterClient", errorResponse.toString() )    ;
                 throwable.printStackTrace();             }
         });
+        hideProgressBar();
 
     }
 
@@ -241,7 +265,7 @@ public class TimelineActivity extends AppCompatActivity {
         // REQUEST_CODE is defined above
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
             // Extract name value from result extras
-            Tweet tweet = (Tweet) data.getParcelableExtra("tweet");
+            Tweet tweet =  data.getParcelableExtra("tweet");
             // Toast the name to display temporarily on screen
             //Toast.makeText(this, (CharSequence) name, Toast.LENGTH_SHORT).show();
         //abive make sure that tweet is processed, button is assigned right fucntion signature
