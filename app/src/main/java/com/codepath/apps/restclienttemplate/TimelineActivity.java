@@ -100,27 +100,28 @@ public class TimelineActivity extends AppCompatActivity {
 
 
     public void fetchTimelineAsync(int page) {
-            // Send the network request to fetch the updated data
-            // `client` here is an instance of Android Async HTTP
-            // getHomeTimeline is an example endpoint.
+        // Send the network request to fetch the updated data
+        // `client` here is an instance of Android Async HTTP
+        // getHomeTimeline is an example endpoint.
 
-            client.getHomeTimeline( new JsonHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+        client.getHomeTimeline(new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
 
-                    // Remember to CLEAR OUT old items before appending in the new ones
-                    //tweetAdapter.clear();
-                    // ...the data has come back, add new items to your adapter...
-                    tweetAdapter.addAll(tweets );
-                    // Now we call setRefreshing(false) to signal refresh has finished
-                    swipeContainer.setRefreshing(false);
-                }
+                // Remember to CLEAR OUT old items before appending in the new ones
+                //tweetAdapter.clear();
+                // ...the data has come back, add new items to your adapter...
+                tweetAdapter.addAll(tweets);
+                // Now we call setRefreshing(false) to signal refresh has finished
+                swipeContainer.setRefreshing(false);
+            }
 
-                public void onFailure(Throwable e) {
-                    Log.d("DEBUG", "Fetch timeline error: " + e.toString());
-                }
-            });
-        }
+            public void onFailure(Throwable e) {
+                Log.d("DEBUG", "Fetch timeline error: " + e.toString());
+            }
+        });
+
+    }
 
 
 

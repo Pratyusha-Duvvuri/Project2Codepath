@@ -58,7 +58,8 @@
         tools:layout_constraintBottom_creator="1"
         android:layout_marginEnd="12dp"
         tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="462dp" />
+        tools:layout_editor_absoluteY="462dp"
+        tools:ignore="MissingConstraints" />
     <!--# you wanna change this above line miss-->
 
 </android.support.constraint.ConstraintLayout>

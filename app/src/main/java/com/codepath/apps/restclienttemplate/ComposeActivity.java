@@ -29,6 +29,7 @@ public class ComposeActivity extends AppCompatActivity {
     private EditText mEditText;
     private TextView characterCount ;
     public int state;
+    public long num;
 
     private final TextWatcher mTextEditorWatcher = new TextWatcher() {
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -58,6 +59,7 @@ public class ComposeActivity extends AppCompatActivity {
 
        // if(!(tweet.user==null)){
         if(state ==10){
+            num= tweet.uid;
         EditText editText = (EditText) findViewById(R.id.tweetHere);
         editText.setText("@"+tweet.user.screenName, TextView.BufferType.EDITABLE);}
     }
@@ -67,7 +69,7 @@ public class ComposeActivity extends AppCompatActivity {
 
         // resolve the text field from the layout
         Message = (EditText) findViewById(R.id.tweetHere);
-
+        //if it is a compose thing
         client.sendTweet(Message.getText().toString(),new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -95,7 +97,9 @@ public class ComposeActivity extends AppCompatActivity {
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 super.onFailure(statusCode, headers, responseString, throwable);
             }
-        });
+        },num);
+
+
     }
 
 

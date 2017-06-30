@@ -20,6 +20,11 @@ public class Tweet implements Parcelable {
     public User user;
     public String createdAt;
     public String reply;
+    public int retweet_count;
+    public int favorite_count;
+    public boolean retweet_status;
+    public boolean favorite_status;
+
 
 
 
@@ -37,6 +42,11 @@ public class Tweet implements Parcelable {
         tweet.createdAt = jsonObject.getString("created_at");
         tweet.user = User.fromJSON( jsonObject.getJSONObject("user"));
         tweet.reply = jsonObject.getString("in_reply_to_status_id");
+        tweet.retweet_count = jsonObject.getInt("retweet_count");
+        tweet.favorite_count = jsonObject.getInt("favorite_count");
+        tweet.retweet_status  = jsonObject.getBoolean("retweeted");
+        tweet.favorite_status = jsonObject.getBoolean("favorited");
+
         return tweet;
     }
 
@@ -61,12 +71,16 @@ public class Tweet implements Parcelable {
     public Tweet(){}
     private Tweet(Parcel in) {
         uid = in.readLong();
-
         user = in.readParcelable(User.class.getClassLoader());
         createdAt = in.readString();
-
         body = in.readString();
         reply = in.readString();
+
+        retweet_count = in.readInt();
+        favorite_count = in.readInt();
+        retweet_status  = in.readByte()==1;
+        favorite_status = in.readByte()==1;
+
 
     }
 
@@ -82,6 +96,10 @@ public class Tweet implements Parcelable {
         out.writeString(createdAt);
         out.writeString(body);
         out.writeString(reply);
+        out.writeInt(retweet_count);
+        out.writeInt(favorite_count);
+        if(retweet_status) out.writeByte((byte)1); else out.writeByte((byte)0);
+        if(retweet_status) out.writeByte((byte)1); else out.writeByte((byte)0);
 
     }
 }
