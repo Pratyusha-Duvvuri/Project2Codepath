@@ -37,7 +37,13 @@ public class ComposeActivity extends AppCompatActivity {
 
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             //This sets a textview to the current length
-            characterCount.setText(String.valueOf(140-s.length()));
+            int val = 140-s.length();
+
+            characterCount.setText(String.valueOf(val));
+            if (val <20)
+            characterCount.setHighlightColor(getResources().getColor(R.color.red));
+            else
+                characterCount.setHighlightColor(getResources().getColor(R.color.blue));
         }
 
         public void afterTextChanged(Editable s) {

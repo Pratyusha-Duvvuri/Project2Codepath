@@ -70,9 +70,25 @@
         android:id="@+id/ivFavorite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_vector_heart_stroke"
         android:layout_alignTop="@+id/ivRetweet"
-        android:layout_marginStart="40dp"
-        android:layout_toEndOf="@+id/tvTimeStamp"
-        app:srcCompat="@drawable/ic_vector_heart_stroke" />
+        android:layout_toEndOf="@+id/tvTimeStamp" />
+
+    <TextView
+        android:id="@+id/tvRetweetCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/ivReply"
+        android:layout_alignBottom="@+id/ivReply"
+        android:layout_toEndOf="@+id/ivRetweet"
+        android:text="Loading" />
+
+    <TextView
+        android:id="@+id/tvFavoriteCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/tvRetweetCount"
+        android:layout_toEndOf="@+id/ivFavorite"
+        android:text="Loading" />
 
 </RelativeLayout>

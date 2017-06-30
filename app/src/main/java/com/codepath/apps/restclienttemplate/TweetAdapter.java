@@ -1,10 +1,10 @@
 package com.codepath.apps.restclienttemplate;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +12,11 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.restclienttemplate.models.Tweet;
-import com.loopj.android.http.JsonHttpResponseHandler;
-
-import org.json.JSONObject;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -60,6 +59,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         LayoutInflater inflater = LayoutInflater.from(context);
         //inflate the tweet row
         View tweetView =inflater.inflate(R.layout.item_tweet, parent, false);
+        client = TwitterApp.getRestClient();
 
         //create a viewholder object
         ViewHolder viewHolder = new ViewHolder(tweetView);
@@ -98,6 +98,14 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         holder.tvTimeStamp.setText(getRelativeTimeAgo(tweet.createdAt));
 
         Glide.with(context).load(tweet.user.profileImageUrl).into(holder.ivProfileImage);
+        if(tweet.favorite_status)
+        holder.favorite.setImageResource(R.drawable.ic_vector_heart);
+        else holder.favorite.setImageResource(R.drawable.ic_vector_heart_stroke);
+        if(tweet.retweet_status)
+            holder.retweet.setImageResource(R.drawable.ic_vector_retweet);
+        else holder.retweet.setImageResource(R.drawable.ic_vector_retweet_stroke);
+        holder.retweetCount.setText(""+tweet.retweet_count);
+        holder.favoriteCount.setText(""+tweet.favorite_count);
 
 
     }
@@ -120,12 +128,14 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         public Button replyButton;
         public ImageButton retweet;
         public ImageButton favorite;
+        public TextView retweetCount;
+        public TextView favoriteCount;
         private final int REQUEST_CODE = 20;
         private final int RESULT_OK = 10;
 
         //for time stamp
 
-        @SuppressLint("WrongViewCast")
+       // @SuppressLint("WrongViewCast")
         public ViewHolder(View itemView){
                 super(itemView);
             // perform findViewById lookups
@@ -142,52 +152,111 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             favorite  = (ImageButton) itemView.findViewById(R.id.ivFavorite);
             favorite.setOnClickListener(this);
             itemView.setOnClickListener(this);
+            retweetCount = (TextView) itemView.findViewById(R.id.tvRetweetCount);
+            favoriteCount = (TextView) itemView.findViewById(R.id.tvFavoriteCount);
+
 
         }
 
 
         @Override
         public void onClick(View v) {
-                // gets item position
-                int position = getAdapterPosition();
-                // make sure the position is valid, i.e. actually exists in the view
-                if (position != RecyclerView.NO_POSITION) {
-                    // get the movie at the position, this won't work if the class is static
-                    Tweet tweet = mTweets.get(position);
-                    // create intent for the new activity
+            // gets item position
+            int position = getAdapterPosition();
+            // make sure the position is valid, i.e. actually exists in the view
+            if (position != RecyclerView.NO_POSITION) {
+                // get the movie at the position, this won't work if the class is static
+                Tweet tweet = mTweets.get(position);
+                // create intent for the new activity
 
 
-                    if (v.getId() == R.id.ivReply){
-                        Intent intent = new Intent(context, ComposeActivity.class);
-                        // serialize the movie using parceler, use its short name as a key
-                        intent.putExtra("tweet", tweet);//Parcels.wrap(t)
-                        // show the activity
-                        //context.startActivityforResult(intent, REQUEST_CODE);
-                        context.startActivity(intent);
+                if (v.getId() == R.id.ivReply) {
+                    Intent intent = new Intent(context, ComposeActivity.class);
+                    // serialize the movie using parceler, use its short name as a key
+                    intent.putExtra("tweet", tweet);//Parcels.wrap(t)
+                    // show the activity
+                    //context.startActivityforResult(intent, REQUEST_CODE);
+                    context.startActivity(intent);
                     //Todo ask about the thing abopve like what is going on with startActivity
-                    }
+                } else if (v.getId() == R.id.ivRetweet) {
+                    Log.d("Cont", "retweet");
 
-                    else if(v.getId() == R.id.ivRetweet){
-                        client = TwitterApp.getRestClient();
-                        client.retweet(Long.toString(tweet.uid),new JsonHttpResponseHandler() {
+
+                    if(tweet.retweet_status){
+
+                        client.unretweet(Long.toString(tweet.uid), new AsyncHttpResponseHandler() {
+
                             @Override
-                            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                                super.onSuccess(statusCode, headers, response);
+                            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                Toast.makeText(context, "Unretweeted", Toast.LENGTH_SHORT).show();
+                                retweet.setImageResource(R.drawable.ic_vector_retweet_stroke);
+
                             }
 
                             @Override
-                            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                                super.onFailure(statusCode, headers, throwable, errorResponse);
+                            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
                             }
-                    });
+                        });
 
                     }
+                    else{
+                    client.retweet(Long.toString(tweet.uid), new AsyncHttpResponseHandler() {
 
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                            Toast.makeText(context, "Retweeted", Toast.LENGTH_SHORT).show();
+                            retweet.setImageResource(R.drawable.ic_vector_retweet);
 
-                    }
-                    else if (v.getId() == R.id.ivFavorite){}
-                    else
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                        }
+                    });}
+
+                } else if (v.getId() == R.id.ivFavorite) {
+                    Log.d("Cont", "favorite");
+                    if(tweet.favorite_status)
                     {
+                        //Toast.makeText(context, "INHERE", Toast.LENGTH_SHORT).show();
+
+                        client.unfavoriteTweet(Long.toString(tweet.uid), new AsyncHttpResponseHandler() {
+
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                Toast.makeText(context, "Unfavorited", Toast.LENGTH_SHORT).show();
+                                favorite.setImageResource(R.drawable.ic_vector_heart_stroke);
+
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                                Toast.makeText(context, "NOTWORKING", Toast.LENGTH_SHORT).show();
+
+                            }
+                        });
+
+
+                    }
+                    else{
+                    client.favoriteTweet(Long.toString(tweet.uid), new AsyncHttpResponseHandler() {
+
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                            Toast.makeText(context, "Favorited", Toast.LENGTH_SHORT).show();
+                            favorite.setImageResource(R.drawable.ic_vector_heart);
+
+                        }
+
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                        }
+                    });}
+                }
+             else {
 //                        Intent intent = new Intent(context, DetailActivity.class);
 //                        // seria\lize the movie using parceler, use its short name as a key
 //                        //intent.putExtra("tweet", tweet);
@@ -196,7 +265,8 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
 //                       // ((ComposeActivity) context).startActivityForResult(intent, REQUEST_CODE);
 //
 //                        context.startActivity(intent);
-                    }
+            }
+            }
 
 
                 }
