@@ -42,6 +42,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
     public static List<Tweet> mTweets;
     Context context;
     TwitterClient client;
+    //public RecyclerView rvTweets;
 
     public TweetAdapter(List<Tweet> tweets){
         mTweets = tweets;
@@ -63,6 +64,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
 
         //create a viewholder object
         ViewHolder viewHolder = new ViewHolder(tweetView);
+
         return viewHolder;
     }
 
@@ -154,6 +156,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             itemView.setOnClickListener(this);
             retweetCount = (TextView) itemView.findViewById(R.id.tvRetweetCount);
             favoriteCount = (TextView) itemView.findViewById(R.id.tvFavoriteCount);
+           // rvTweets = (RecyclerView) itemView.findViewById(R.id.rvTweet);
 
 
         }
@@ -200,6 +203,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                         });
 
                     }
+
                     else{
                     client.retweet(Long.toString(tweet.uid), new AsyncHttpResponseHandler() {
 
@@ -266,10 +270,18 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
 //
 //                        context.startActivity(intent);
             }
+                mTweets.add(0, tweet);
+                //tweetAdapter.notifyItemInserted(0);
+                TweetAdapter.this.notifyItemInserted(0);
+         //       rvTweets.scrollToPosition(0);
+
             }
 
 
-                }
+
+        }
+
+
         }
 
 
