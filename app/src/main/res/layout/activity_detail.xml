@@ -47,6 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentStart="true"
+        android:autoLink="all"
         android:layout_below="@+id/ivDetailsProfile"
         android:text="TextView" />
 
@@ -55,10 +56,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
+        android:layout_marginEnd="13dp"
+        android:layout_alignBaseline="@+id/tvDetailsLike"
         android:layout_alignBottom="@+id/tvDetailsLike"
-        android:layout_toStartOf="@+id/tvDetailsTimeStamp"
-        android:layout_marginEnd="53dp"
-        android:layout_marginBottom="16dp" />
+        android:layout_toStartOf="@+id/tvDetailsTimeStamp" />
 
     <ImageButton
         android:id="@+id/ivDetailLike"
@@ -76,16 +77,16 @@
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/ic_vector_retweet_stroke"
         android:layout_alignTop="@+id/ivDetailLike"
-        android:layout_alignStart="@+id/tvDetailsRetweets"
-        android:layout_marginStart="42dp" />
+        android:layout_alignStart="@+id/tvDetailsRetweets" />
 
     <TextView
         android:id="@+id/tvDetailScreenName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="TextView"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/ivDetailReply"
-        android:text="TextView" />
+        android:layout_toEndOf="@+id/ivDetailsProfile"
+        android:layout_marginStart="17dp" />
 
     <ImageView
         android:id="@+id/ivLoadedImage"

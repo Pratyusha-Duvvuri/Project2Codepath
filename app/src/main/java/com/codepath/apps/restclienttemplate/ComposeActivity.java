@@ -40,7 +40,7 @@ public class ComposeActivity extends AppCompatActivity {
             int val = 140-s.length();
 
             characterCount.setText(String.valueOf(val));
-            if (val <20)
+            if (val <135)
             characterCount.setHighlightColor(getResources().getColor(R.color.red));
             else
                 characterCount.setHighlightColor(getResources().getColor(R.color.blue));

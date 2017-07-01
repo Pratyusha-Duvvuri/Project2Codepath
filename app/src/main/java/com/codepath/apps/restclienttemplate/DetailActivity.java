@@ -26,8 +26,8 @@ import static com.loopj.android.http.AsyncHttpClient.log;
 
 public class DetailActivity extends AppCompatActivity implements View.OnClickListener {
 
-    @BindView(R.id.tvDetailsBody)
-    TextView tvBody;
+    @BindView(R.id.tvDetailsBody)TextView tvBody;
+
 
     //public TextView tvBody;
 
@@ -86,8 +86,10 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         tvScreenName.setText("       @" + tweet.user.screenName);
 
         tvTimeStamp.setText(relTime);
+
         Glide.with(this).load(tweet.user.profileImageUrl).into(ivProfileImage);
-        Glide.with(this).load(rightUrl).into(ivProfileImage);
+        if(tweet.imageURL!= "urgh")
+        //Glide.with(this).load(tweet.imageURL).into(loadedImage);
 
         if (tweet.favorite_status)
             favorite.setImageResource(R.drawable.ic_vector_heart);

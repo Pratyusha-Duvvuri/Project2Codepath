@@ -36,7 +36,7 @@ The following **bonus** features are implemented:
 * [ ] Compose tweet functionality is build using modal overlay
 * [ x] Use Parcelable instead of Serializable using the popular [Parceler library](http://guides.codepath.com/android/Using-Parceler).
 * [x ] Replace all icon drawables and other static image assets with [vector drawables](http://guides.codepath.com/android/Drawables#vector-drawables) where appropriate.
-* [ ] User can **click a link within a tweet body** on tweet details view. The click will launch the web browser with relevant page opened.
+* [x ] User can **click a link within a tweet body** on tweet details view. The click will launch the web browser with relevant page opened.
 * [ ] User can view following / followers list through any profile they view.
 * [ ] User can see embedded image media within the tweet detail view
 * [x ] Use the popular ButterKnife annotation library to reduce view boilerplate.
@@ -52,7 +52,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='https://github.com/Pratyusha-Duvvuri/Project2Codepath/blob/master/demo0.mp4' title='Demo0' width='' alt='Video Walkthrough' />
+<img src='https://github.com/Pratyusha-Duvvuri/Project2Codepath/blob/master/video1.mp4' title='Demo0' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 

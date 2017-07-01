@@ -96,7 +96,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         //populate the views according to this data
         holder.tvUsername.setText(tweet.user.name);
         holder.tvBody.setText(tweet.body);
-        holder.tvScreenName.setText("       @"+tweet.user.screenName);
+        holder.tvScreenName.setText("@"+tweet.user.screenName);
         relTime= getRelativeTimeAgo(tweet.createdAt);
         holder.tvTimeStamp.setText(relTime);
 
@@ -193,7 +193,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
 
                     if(tweet.retweet_status){
                         tweet.retweet_count-=1;
-                        TweetAdapter.this.notify();
+                        //TweetAdapter.this.notify();
 
 
 
@@ -216,7 +216,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
 
                     else{
                         tweet.retweet_count+=1;
-                        TweetAdapter.this.notify();
+                       // TweetAdapter.this.notify();
 
                         client.retweet(Long.toString(tweet.uid), new AsyncHttpResponseHandler() {
 

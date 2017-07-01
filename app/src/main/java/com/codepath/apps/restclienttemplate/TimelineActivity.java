@@ -158,8 +158,8 @@ public class TimelineActivity extends AppCompatActivity {
                     tweets.add(tweet);
                     tweetAdapter.notifyItemInserted(tweets.size() - 1);
                 }
-                tweetAdapter.addAll(tweets);
-                tweetAdapter.notifyDataSetChanged();
+                //tweetAdapter.addAll(tweets);
+                //tweetAdapter.notifyDataSetChanged();
 
                 // Now we call setRefreshing(false) to signal refresh has finished
                 swipeContainer.setRefreshing(false);
@@ -197,11 +197,12 @@ public class TimelineActivity extends AppCompatActivity {
 
                     try {
                         tweet = Tweet.fromJSON(response.getJSONObject(i));
+                        tweets.add(tweet);
+                        tweetAdapter.notifyItemInserted(tweets.size()-1);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    tweets.add(tweet);
-                    tweetAdapter.notifyItemInserted(tweets.size()-1);
+
 
 
                 }

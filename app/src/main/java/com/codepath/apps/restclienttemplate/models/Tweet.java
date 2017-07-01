@@ -24,6 +24,7 @@ public class Tweet implements Parcelable {
     public int favorite_count;
     public boolean retweet_status;
     public boolean favorite_status;
+    public String imageURL;
 
 
 
@@ -46,7 +47,10 @@ public class Tweet implements Parcelable {
         tweet.favorite_count = jsonObject.getInt("favorite_count");
         tweet.retweet_status  = jsonObject.getBoolean("retweeted");
         tweet.favorite_status = jsonObject.getBoolean("favorited");
-
+        //if(jsonObject.getJSONObject("entities").getJSONArray("media")!=null)
+         //   tweet.imageURL = jsonObject.getJSONObject("entities").getJSONArray("media").getJSONObject(0).getString("media_url")+":large";
+        //else
+         //   tweet.imageURL = "urgh";
         return tweet;
     }
 
@@ -76,10 +80,13 @@ public class Tweet implements Parcelable {
         body = in.readString();
         reply = in.readString();
 
+
         retweet_count = in.readInt();
         favorite_count = in.readInt();
         retweet_status  = in.readByte()==1;
         favorite_status = in.readByte()==1;
+
+        //imageURL = in.readString();
 
 
     }
@@ -100,6 +107,7 @@ public class Tweet implements Parcelable {
         out.writeInt(favorite_count);
         if(retweet_status) out.writeByte((byte)1); else out.writeByte((byte)0);
         if(retweet_status) out.writeByte((byte)1); else out.writeByte((byte)0);
+        //out.writeString(imageURL);
 
     }
 }
