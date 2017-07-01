@@ -37,9 +37,9 @@
         android:layout_height="wrap_content"
         android:text="TextView"
         android:id="@+id/tvDetailsLike"
-        android:layout_marginTop="102dp"
+        android:layout_marginTop="88dp"
         android:layout_below="@+id/tvDetailsBody"
-        android:layout_toEndOf="@+id/ivDetailsProfile" />
+        android:layout_alignStart="@+id/ivDetailLike" />
 
     <TextView
         android:id="@+id/tvDetailsBody"
@@ -54,25 +54,30 @@
         android:id="@+id/tvDetailsRetweets"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/tvDetailsLike"
-        android:layout_centerHorizontal="true"
-        android:text="TextView" />
+        android:text="TextView"
+        android:layout_alignBottom="@+id/tvDetailsLike"
+        android:layout_toStartOf="@+id/tvDetailsTimeStamp"
+        android:layout_marginEnd="53dp"
+        android:layout_marginBottom="16dp" />
 
     <ImageButton
         android:id="@+id/ivDetailLike"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/ic_vector_heart_stroke"
-        android:layout_alignTop="@+id/ivDetailReply"
-        android:layout_toStartOf="@+id/tvDetailsRetweets" />
+        android:layout_above="@+id/tvDetailsRetweets"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="25dp"
+        android:layout_marginBottom="26dp" />
 
     <ImageButton
         android:id="@+id/ivDetailReply"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/tvDetailsRetweets"
+        app:srcCompat="@drawable/ic_vector_retweet_stroke"
+        android:layout_alignTop="@+id/ivDetailLike"
         android:layout_alignStart="@+id/tvDetailsRetweets"
-        app:srcCompat="@drawable/ic_vector_retweet_stroke" />
+        android:layout_marginStart="42dp" />
 
     <TextView
         android:id="@+id/tvDetailScreenName"
