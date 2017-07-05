@@ -89,11 +89,14 @@
         android:layout_marginStart="17dp" />
 
     <ImageView
-        android:id="@+id/ivLoadedImage"
+        android:id="@+id/ivDetailsLoadedImage"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="14dp"
-        app:srcCompat="@drawable/ic_vector_close" />
+        app:srcCompat="@drawable/ic_vector_close"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/tvDetailsLike"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

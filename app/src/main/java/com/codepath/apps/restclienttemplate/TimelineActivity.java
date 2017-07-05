@@ -79,8 +79,17 @@ public class TimelineActivity extends AppCompatActivity {
         //RecyclerView setup ( layout manager, use adapter)
         llayout= new LinearLayoutManager(this) ;
         rvTweets.setLayoutManager(llayout);
-
+        scrollListener = new EndlessRecyclerViewScrollListener(llayout) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to the bottom of the list
+                loadNextDataFromApi(page);
+            }
+        };
         //set the adapter
+        // Adds the scroll listener to RecyclerView
+        rvTweets.addOnScrollListener(scrollListener);
 
         rvTweets.setAdapter(tweetAdapter);
 
@@ -110,23 +119,71 @@ public class TimelineActivity extends AppCompatActivity {
         scrollListener = new EndlessRecyclerViewScrollListener(llayout) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                // Triggered only when new data needs to be appended to the list
-                // Add whatever code is needed to append new items to the bottom of the list
                 loadNextDataFromApi(page);
-            }
-        };
-        // Adds the scroll listener to RecyclerView
+            }};
+
         rvTweets.addOnScrollListener(scrollListener);
 
 
-
     }
+
     public void loadNextDataFromApi(int offset) {
         // Send an API request to retrieve appropriate paginated data
+        long Id = tweets.get(tweets.size()-1).uid;
+        Toast.makeText(this, ""+Id, Toast.LENGTH_SHORT).show();
+        client.getHomeTimelineEndless( new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Log.d("TwitterClient", response.toString() )    ;        }
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                //iterate through the JSON array
+                // for each entry, deserialize the JSON onject
+
+                for(int i=0;i< response.length();i++){
+
+                    //convert each object to a Tweet model
+                    //add that Tweet model to our data source
+                    //notify the adapter that we've added an item
+                    Tweet tweet = null;
+
+                    try {
+                        tweet = Tweet.fromJSON(response.getJSONObject(i));
+                        tweets.add(tweet);
+                        tweetAdapter.notifyItemInserted(tweets.size()-1);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Log.d("TwitterClient", responseString )    ;
+                throwable.printStackTrace();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Log.d("TwitterClient", errorResponse.toString() )    ;
+                throwable.printStackTrace();            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                Log.d("TwitterClient", errorResponse.toString() )    ;
+                throwable.printStackTrace();             }
+        }, Id);
+
+
         //  --> Send the request including an offset value (i.e `page`) as a query parameter.
+
         //  --> Deserialize and construct new model objects from the API response
+
         //  --> Append the new data objects to the existing set of items inside the array of items
-        //  --> Notify the adapter of the new items made with `notifyItemRangeInserted()`
+
+        //  --> Notify the adapter of the new items made with `notifyItemRangeInserted()
+
     }
 
     public void fetchTimelineAsync(int page) {
@@ -169,7 +226,7 @@ public class TimelineActivity extends AppCompatActivity {
                 Log.d("DEBUG", "Fetch timeline error: " + e.toString());
                 Log.d("DEBUG", "Fetch timeline error: " + e.toString());
             }
-        });
+        },1);
 
     }
 
@@ -223,7 +280,7 @@ public class TimelineActivity extends AppCompatActivity {
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                 Log.d("TwitterClient", errorResponse.toString() )    ;
                 throwable.printStackTrace();             }
-        });
+        },1);
         hideProgressBar();
 
     }

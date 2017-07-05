@@ -6,6 +6,8 @@ import android.os.Parcelable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static com.loopj.android.http.AsyncHttpClient.log;
+
 /**
  * Created by pratyusha98 on 6/26/17.
  */
@@ -24,6 +26,7 @@ public class Tweet implements Parcelable {
     public int favorite_count;
     public boolean retweet_status;
     public boolean favorite_status;
+    public boolean check;
     public String imageURL;
 
 
@@ -47,10 +50,15 @@ public class Tweet implements Parcelable {
         tweet.favorite_count = jsonObject.getInt("favorite_count");
         tweet.retweet_status  = jsonObject.getBoolean("retweeted");
         tweet.favorite_status = jsonObject.getBoolean("favorited");
-        //if(jsonObject.getJSONObject("entities").getJSONArray("media")!=null)
-         //   tweet.imageURL = jsonObject.getJSONObject("entities").getJSONArray("media").getJSONObject(0).getString("media_url")+":large";
-        //else
-         //   tweet.imageURL = "urgh";
+        if(jsonObject.getJSONObject("entities").has("media")) {
+            tweet.check = true;
+            tweet.imageURL = jsonObject.getJSONObject("entities").getJSONArray("media").getJSONObject(0).getString("media_url") + ":large";
+            log.d("TWEET",""+tweet.imageURL);
+
+        }
+            else
+        {tweet.check = false;
+            tweet.imageURL = "urgh";}
         return tweet;
     }
 
@@ -86,7 +94,8 @@ public class Tweet implements Parcelable {
         retweet_status  = in.readByte()==1;
         favorite_status = in.readByte()==1;
 
-        //imageURL = in.readString();
+        imageURL = in.readString();
+        check  = in.readByte()==1;
 
 
     }
@@ -107,7 +116,11 @@ public class Tweet implements Parcelable {
         out.writeInt(favorite_count);
         if(retweet_status) out.writeByte((byte)1); else out.writeByte((byte)0);
         if(retweet_status) out.writeByte((byte)1); else out.writeByte((byte)0);
-        //out.writeString(imageURL);
+        out.writeString(imageURL);
+        if(check) out.writeByte((byte)1); else out.writeByte((byte)0);
+
 
     }
+
+
 }

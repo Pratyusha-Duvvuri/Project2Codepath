@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -61,8 +60,6 @@ public class ComposeActivity extends AppCompatActivity {
         characterCount = (TextView)findViewById(R.id.characterCount);
         Tweet tweet = getIntent().getParcelableExtra("tweet");
         state = getIntent().getIntExtra("iamhere",10);
-        Log.d("kayfam", "ayy");
-
        // if(!(tweet.user==null)){
         if(state ==10){
             num= tweet.uid;
