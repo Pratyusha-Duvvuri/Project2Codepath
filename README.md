@@ -52,7 +52,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='https://github.com/Pratyusha-Duvvuri/Project2Codepath/blob/master/video1.mp4' title='Demo0' width='' alt='Video Walkthrough' />
+<img src='https://github.com/Pratyusha-Duvvuri/Project2Codepath/blob/master/vid_walk.mp4' title='vid_walk' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
