@@ -195,8 +195,6 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                         tweet.retweet_count-=1;
                         //TweetAdapter.this.notify();
 
-
-
                         client.unretweet(Long.toString(tweet.uid), new AsyncHttpResponseHandler() {
 
                             @Override

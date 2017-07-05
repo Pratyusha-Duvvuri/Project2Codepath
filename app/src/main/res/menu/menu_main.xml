@@ -6,11 +6,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/item1"
-        android:icon="@drawable/ic_action_name"
-        android:onClick= "onComposeAction"
-        app:showAsAction="ifRoom"
-        android:title="Compose">
-    </item>
+        android:icon="@drawable/ic_vector_compose"
+        android:onClick="onComposeAction"
+        android:title="Compose"
+        app:showAsAction="always"></item>
     <item
         android:id="@+id/miActionProgress"
         android:title="Loading..."
