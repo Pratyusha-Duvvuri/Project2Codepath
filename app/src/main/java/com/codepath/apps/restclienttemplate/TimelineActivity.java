@@ -130,7 +130,7 @@ public class TimelineActivity extends AppCompatActivity {
     public void loadNextDataFromApi(int offset) {
         // Send an API request to retrieve appropriate paginated data
         long Id = tweets.get(tweets.size()-1).uid;
-        Toast.makeText(this, ""+Id, Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this, ""+Id, Toast.LENGTH_SHORT).show();
         client.getHomeTimelineEndless( new JsonHttpResponseHandler(){
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -175,7 +175,7 @@ public class TimelineActivity extends AppCompatActivity {
                 throwable.printStackTrace();             }
         }, Id);
 
-
+//These are the steps that i took
         //  --> Send the request including an offset value (i.e `page`) as a query parameter.
 
         //  --> Deserialize and construct new model objects from the API response
@@ -326,7 +326,7 @@ public class TimelineActivity extends AppCompatActivity {
             Tweet tweet =  data.getParcelableExtra("tweet");
             // Toast the name to display temporarily on screen
             //Toast.makeText(this, (CharSequence) name, Toast.LENGTH_SHORT).show();
-        //abive make sure that tweet is processed, button is assigned right fucntion signature
+        //alive make sure that tweet is processed, button is assigned right fucntion signature
             //and we getClass properly
 
 

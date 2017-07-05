@@ -45,11 +45,9 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
     public String relTime;
     //public RecyclerView rvTweets;
 
-    public TweetAdapter(List<Tweet> tweets){
+    public TweetAdapter(List<Tweet> tweets) {
         mTweets = tweets;
     }
-
-
 
 
     //final descriptions : inflates the layout
@@ -57,10 +55,10 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
     //only invoked when a new row has to be created
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-         context = parent.getContext();
+        context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         //inflate the tweet row
-        View tweetView =inflater.inflate(R.layout.item_tweet, parent, false);
+        View tweetView = inflater.inflate(R.layout.item_tweet, parent, false);
         client = TwitterApp.getRestClient();
 
         //create a viewholder object
@@ -96,19 +94,19 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         //populate the views according to this data
         holder.tvUsername.setText(tweet.user.name);
         holder.tvBody.setText(tweet.body);
-        holder.tvScreenName.setText("@"+tweet.user.screenName);
-        relTime= getRelativeTimeAgo(tweet.createdAt);
+        holder.tvScreenName.setText("@" + tweet.user.screenName);
+        relTime = getRelativeTimeAgo(tweet.createdAt);
         holder.tvTimeStamp.setText(relTime);
 
         Glide.with(context).load(tweet.user.profileImageUrl).into(holder.ivProfileImage);
-        if(tweet.favorite_status)
-        holder.favorite.setImageResource(R.drawable.ic_vector_heart);
+        if (tweet.favorite_status)
+            holder.favorite.setImageResource(R.drawable.ic_vector_heart);
         else holder.favorite.setImageResource(R.drawable.ic_vector_heart_stroke);
-        if(tweet.retweet_status)
+        if (tweet.retweet_status)
             holder.retweet.setImageResource(R.drawable.ic_vector_retweet);
         else holder.retweet.setImageResource(R.drawable.ic_vector_retweet_stroke);
-        holder.retweetCount.setText(""+tweet.retweet_count);
-        holder.favoriteCount.setText(""+tweet.favorite_count);
+        holder.retweetCount.setText("" + tweet.retweet_count);
+        holder.favoriteCount.setText("" + tweet.favorite_count);
 
 
     }
@@ -121,7 +119,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
 
     // create ViewHolder class
 
-    public  class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public ImageView ivProfileImage;
         public TextView tvUsername;
@@ -138,9 +136,9 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
 
         //for time stamp
 
-       // @SuppressLint("WrongViewCast")
-        public ViewHolder(View itemView){
-                super(itemView);
+        // @SuppressLint("WrongViewCast")
+        public ViewHolder(View itemView) {
+            super(itemView);
             // perform findViewById lookups
 
             ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
@@ -148,16 +146,15 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             tvBody = (TextView) itemView.findViewById(R.id.tvBody);
             tvTimeStamp = (TextView) itemView.findViewById(R.id.tvTimeStamp);
             tvScreenName = (TextView) itemView.findViewById(R.id.tvScreenName);
-            replyButton  = (Button) itemView.findViewById(R.id.ivReply);
+            replyButton = (Button) itemView.findViewById(R.id.ivReply);
             replyButton.setOnClickListener(this);
-            retweet  = (ImageButton) itemView.findViewById(R.id.ivRetweet);
+            retweet = (ImageButton) itemView.findViewById(R.id.ivRetweet);
             retweet.setOnClickListener(this);
-            favorite  = (ImageButton) itemView.findViewById(R.id.ivFavorite);
+            favorite = (ImageButton) itemView.findViewById(R.id.ivFavorite);
             favorite.setOnClickListener(this);
             itemView.setOnClickListener(this);
             retweetCount = (TextView) itemView.findViewById(R.id.tvRetweetCount);
             favoriteCount = (TextView) itemView.findViewById(R.id.tvFavoriteCount);
-           // rvTweets = (RecyclerView) itemView.findViewById(R.id.rvTweet);
 
 
         }
@@ -180,19 +177,22 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                     intent.putExtra("tweet", tweet);//Parcels.wrap(t)
                     // show the activity
                     //context.startActivityforResult(intent, REQUEST_CODE);
-                    ((TimelineActivity)context).startActivityForResult(intent,20);
+                    ((TimelineActivity) context).startActivityForResult(intent, 20);
                     // REQUEST_CODE is defined above
 //                    if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
 //                        // Extract name value from result extras
 //                        Tweet tweet = (Tweet) data.getParcelableExtra("tweet");
                     //Todo ask about the thing abopve like what is going on with startActivity
-                }
-                else if (v.getId() == R.id.ivRetweet) {
+                } else if (v.getId() == R.id.ivRetweet) {
                     Log.d("Cont", "retweet");
 
 
-                    if(tweet.retweet_status){
-                        tweet.retweet_count-=1;
+                    if (tweet.retweet_status) {
+                        tweet.retweet_count -= 1;
+                        retweetCount.setText("" + tweet.retweet_count);
+                        tweet.retweet_status= !tweet.retweet_status;
+
+
                         //TweetAdapter.this.notify();
 
                         client.unretweet(Long.toString(tweet.uid), new AsyncHttpResponseHandler() {
@@ -210,32 +210,35 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                             }
                         });
 
-                    }
+                    } else {
+                        tweet.retweet_count += 1;
+                        retweetCount.setText("" + tweet.retweet_count);
+                        tweet.retweet_status= !tweet.retweet_status;
 
-                    else{
-                        tweet.retweet_count+=1;
-                       // TweetAdapter.this.notify();
 
                         client.retweet(Long.toString(tweet.uid), new AsyncHttpResponseHandler() {
 
-                        @Override
-                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                            Toast.makeText(context, "Retweeted", Toast.LENGTH_SHORT).show();
-                            retweet.setImageResource(R.drawable.ic_vector_retweet);
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                Toast.makeText(context, "Retweeted", Toast.LENGTH_SHORT).show();
+                                retweet.setImageResource(R.drawable.ic_vector_retweet);
 
-                        }
+                            }
 
-                        @Override
-                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 
-                        }
-                    });}
+                            }
+                        });
+                    }
 
                 } else if (v.getId() == R.id.ivFavorite) {
                     Log.d("Cont", "favorite");
-                    if(tweet.favorite_status)
-                    {
-                        //Toast.makeText(context, "INHERE", Toast.LENGTH_SHORT).show();
+                    if (tweet.favorite_status) {
+                        tweet.favorite_count -= 1;
+                        favoriteCount.setText("" + tweet.favorite_count);
+                        tweet.favorite_status= !tweet.favorite_status;
+
 
                         client.unfavoriteTweet(Long.toString(tweet.uid), new AsyncHttpResponseHandler() {
 
@@ -248,30 +251,34 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
 
                             @Override
                             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                                Toast.makeText(context, "NOTWORKING", Toast.LENGTH_SHORT).show();
+                               // Toast.makeText(context, "NOTWORKING", Toast.LENGTH_SHORT).show();
 
                             }
                         });
 
 
+                    } else {
+                        tweet.favorite_count += 1;
+                        favoriteCount.setText("" + tweet.favorite_count);
+                        tweet.favorite_status= !tweet.favorite_status;
+
+
+                        client.favoriteTweet(Long.toString(tweet.uid), new AsyncHttpResponseHandler() {
+
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                Toast.makeText(context, "Favorited", Toast.LENGTH_SHORT).show();
+                                favorite.setImageResource(R.drawable.ic_vector_heart);
+
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                            }
+                        });
                     }
-                    else{
-                    client.favoriteTweet(Long.toString(tweet.uid), new AsyncHttpResponseHandler() {
-
-                        @Override
-                        public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                            Toast.makeText(context, "Favorited", Toast.LENGTH_SHORT).show();
-                            favorite.setImageResource(R.drawable.ic_vector_heart);
-
-                        }
-
-                        @Override
-                        public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
-                        }
-                    });}
-                }
-             else {
+                } else {
                     //Toast.makeText(context, "Going to Details", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(context, DetailActivity.class);
                     // serialize the movie using parceler, use its short name as a key
@@ -281,23 +288,15 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                     //context.startActivityforResult(intent, REQUEST_CODE);
                     context.startActivity(intent);
 
-             }
+                }
                 Toast.makeText(context, "Going to Details", Toast.LENGTH_SHORT).show();
 
 
-                //mTweets.add(0, tweet);
-                //tweetAdapter.notifyItemInserted(0);
-                //TweetAdapter.this.notifyItemInserted(0);
-                //rvTweets.scrollToPosition(0);
-
             }
 
-
-
         }
 
-
-        }
+    }
 
 
     // Clean all elements of the recycler
@@ -306,10 +305,5 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         notifyDataSetChanged();
     }
 
-    // Add a list of items -- change to type used
-    public void addAll(List<Tweet> list) {
-        mTweets.addAll(list);
-        notifyDataSetChanged();
-    }
 }
 

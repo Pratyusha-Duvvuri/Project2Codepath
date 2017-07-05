@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.restclienttemplate.models.Tweet;
@@ -70,7 +69,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         Glide.with(this).load(tweet.user.profileImageUrl).into(ivProfileImage);
         if(tweet.imageURL!="urgh") {
 
-            Toast.makeText(this, ""+tweet.imageURL, Toast.LENGTH_SHORT).show();
+           // Toast.makeText(this, ""+tweet.imageURL, Toast.LENGTH_SHORT).show();
 
             Glide.with(this).load(tweet.imageURL).into(loadedImage);
 
@@ -103,7 +102,9 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         if (v.getId() == R.id.ivDetailLike) {
             Log.d("Cont", "favorite");
             if (tweet.favorite_status) {
-
+                tweet.favorite_status= !tweet.favorite_status;
+                tweet.favorite_count-=1;
+                favoriteCount.setText(""+tweet.favorite_count);
                 client.unfavoriteTweet(Long.toString(tweet.uid), new AsyncHttpResponseHandler() {
 
                     @Override
@@ -120,6 +121,10 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
 
             } else {
+                tweet.favorite_count+=1;
+                favoriteCount.setText(""+tweet.favorite_count);
+                tweet.favorite_status= !tweet.favorite_status;
+
                 client.favoriteTweet(Long.toString(tweet.uid), new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -138,6 +143,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
             if (tweet.retweet_status) {
                 tweet.retweet_count -= 1;
+                retweetCount.setText(""+tweet.retweet_count);
+                tweet.retweet_status= false;
 
 
                 client.unretweet(Long.toString(tweet.uid), new AsyncHttpResponseHandler() {
@@ -156,6 +163,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
             } else {
                 tweet.retweet_count += 1;
+                tweet.retweet_status= true;
+                retweetCount.setText(""+tweet.retweet_count);
 
                 client.retweet(Long.toString(tweet.uid), new AsyncHttpResponseHandler() {
 
